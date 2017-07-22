@@ -7,7 +7,8 @@ from itauscraper.scraper import ItauScraper
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='itau', description='Scraper de extrato do Itaú.')
+    parser = argparse.ArgumentParser(prog='itau',
+                                     description='Scraper para baixar seus extratos do Itaú com um comando.')
 
     parser.add_argument('--agencia', '--ag', '-a', help='Agência na forma 0000', required=True)
     parser.add_argument('--conta', '--cc', '-c', help='Conta sem dígito na forma 00000', required=True)

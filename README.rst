@@ -106,7 +106,7 @@ Use pela linha de comando:
 
 .. code-block:: console
 
- $ itauscraper --agencia 1234 --conta 12345 --dv 6 --senha SECRET
+ $ itauscraper --agencia 1234 --conta 12345 --digito 6 --senha SECRET
 
  Dia                  Descrição            R$
  -------------------  -----------  ----------

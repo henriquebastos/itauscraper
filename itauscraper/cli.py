@@ -12,7 +12,7 @@ def main():
 
     parser.add_argument('--agencia', '-a', help='Agência na forma 0000', required=True)
     parser.add_argument('--conta', '-c', help='Conta sem dígito na forma 00000', required=True)
-    parser.add_argument('--digito', '-d', help='Dígito da conta na forma 0', required=True)
+    parser.add_argument('--dv', '-d', help='Dígito verificador da conta na forma 0', required=True)
     parser.add_argument('--senha', '-s', help='Senha eletrônica da conta no Itaú.', required=True)
 
     args = parser.parse_args()

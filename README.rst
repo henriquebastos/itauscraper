@@ -106,7 +106,13 @@ Use pela linha de comando:
 
 .. code-block:: console
 
- itauscraper --agencia 1234 --conta 12345 --digito 6 --senha SECRET
+ $ itauscraper --agencia 1234 --conta 12345 --digito 6 --senha SECRET
+
+ Dia                  Descrição            R$
+ -------------------  -----------  ----------
+ 2017-01-01 00:00:00  RSHOP-LOJA1       -1.99
+ 2017-01-02 00:00:00  RSHOP-LOJA2       -5.00
+ 2017-01-03 00:00:00  TBI 1234567       10.00
 
 Ou importe direto no seu código:
 

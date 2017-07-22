@@ -10,10 +10,10 @@ def main():
     parser = argparse.ArgumentParser(prog='itau',
                                      description='Scraper para baixar seus extratos do Itaú com um comando.')
 
-    parser.add_argument('--agencia', '--ag', '-a', help='Agência na forma 0000', required=True)
-    parser.add_argument('--conta', '--cc', '-c', help='Conta sem dígito na forma 00000', required=True)
-    parser.add_argument('--digito', '--dv', '-d', help='Dígito da conta na forma 0', required=True)
-    parser.add_argument('--senha', help='Senha eletrônica da conta no Itaú.', required=True)
+    parser.add_argument('--agencia', '-a', help='Agência na forma 0000', required=True)
+    parser.add_argument('--conta', '-c', help='Conta sem dígito na forma 00000', required=True)
+    parser.add_argument('--digito', '-d', help='Dígito da conta na forma 0', required=True)
+    parser.add_argument('--senha', '-s', help='Senha eletrônica da conta no Itaú.', required=True)
 
     args = parser.parse_args()
 

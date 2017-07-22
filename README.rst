@@ -120,7 +120,7 @@ Ou importe direto no seu código:
 
  from itauscraper import ItauScraper
 
- itau = ItauScraper(agencia='1234', conta='12345', dv='6', senha='SECRET')
+ itau = ItauScraper(agencia='1234', conta='12345', digito='6', senha='SECRET')
  if itau.login():
      dados = itau.extrato()
      # TODO: Divirta-se!

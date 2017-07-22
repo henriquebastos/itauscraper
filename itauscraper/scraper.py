@@ -23,10 +23,10 @@ class MobileSession(requests.Session):
 class ItauScraper:
     """Scraper do Itaú Pessoa Física."""
 
-    def __init__(self, agencia, conta, dv, senha):
+    def __init__(self, agencia, conta, digito, senha):
         self.agencia = agencia
         self.conta = conta
-        self.dv = dv
+        self.digito = digito
         self.senha = senha
 
         self.session = MobileSession()
@@ -58,7 +58,7 @@ class ItauScraper:
         data.update({
             'ctl00$ContentPlaceHolder1$txtAgenciaT': self.agencia,
             'ctl00$ContentPlaceHolder1$txtContaT': self.conta,
-            'ctl00$ContentPlaceHolder1$txtDACT': self.dv,
+            'ctl00$ContentPlaceHolder1$txtDACT': self.digito,
             'ctl00$ContentPlaceHolder1$txtPassT': self.senha,
             'ctl00$ContentPlaceHolder1$btnLogInT.x': '12',
             'ctl00$ContentPlaceHolder1$btnLogInT.y': '14',

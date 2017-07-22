@@ -71,7 +71,7 @@ Depois do login feito, somos redirecionados para uma página com um menu de
 navegação. Esta página não é usada no fluxo, mas quando quisermos implementar novas
 funcionalidades no ``ItauScraper`` é nela que deveremos começar.
 
-.. image:: docs/itau-login.jpg
+.. image:: https://raw.githubusercontent.com/henriquebastos/itauscraper/master/docs/itau-login.jpg
 
 O extrato
 ~~~~~~~~~
@@ -81,7 +81,7 @@ No fim da página do extrato tem 4 links para listar os extratos dos períodos
 7, 15, 30 e 90 dias. Estas urls parecem mudar de tempos em tempos, como a do login,
 então é preciso *extrair o link* para *90 dias* e obter o extrato com outro ``GET``.
 
-.. image:: docs/itau-extrato.jpg
+.. image:: https://raw.githubusercontent.com/henriquebastos/itauscraper/master/docs/itau-extrato.jpg
 
 Com o extrato do maior período:
 

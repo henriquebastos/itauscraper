@@ -99,6 +99,38 @@ No final, temos uma *tupla de tuplas* na forma:
      (datetime.datetime(2017, 1, 2, 0, 0), 'RSHOP-LOJA2', Decimal('-5.00')),
      (datetime.datetime(2017, 1, 3, 0, 0), 'TBI 1234567', Decimal('10.00')))
 
+O cartão
+~~~~~~~~
+
+Quando acessamos a *url do cartão*, são exibidas 3 opções para listar:
+
+1. a fatura anterior;
+2. a fatura atual;
+3. os lançamentos parciais da próxima fatura.
+
+Estas urls parecem mudar de tempos em tempos, então é preciso *extrair o link* para a *fatura atual*
+e realizar um novo ``GET`` para obter o extrato de lançamentos.
+
+.. image:: https://raw.githubusercontent.com/henriquebastos/itauscraper/master/docs/itau-cartao.jpg
+
+Além dos lançamentos, há na página um resumo com totais.
+
+Com o extrato do cartão:
+
+1. Extraímos a informação do html;
+2. Reconstruímos o resumo como um *dicionário*.
+2. Reconstruímos a tabela com as colunas: data, descrição e valor;
+4. Convertemos cada *data* para o tipo ``datetime.date``;
+5. Convertemos cada *valor* para o tipo ``Decimal``;
+
+No final, temos um *dicionário* com o sumário da fatura e uma *tupla de tuplas* na forma:
+
+.. code-block:: python
+
+    ((datetime.datetime(2017, 1, 1, 0, 0), 'RSHOP-LOJA1', Decimal('-1.99')),
+     (datetime.datetime(2017, 1, 2, 0, 0), 'RSHOP-LOJA2', Decimal('-5.00')),
+     (datetime.datetime(2017, 1, 3, 0, 0), 'TBI 1234567', Decimal('10.00')))
+
 Como usar
 ---------
 
@@ -106,13 +138,8 @@ Use pela linha de comando:
 
 .. code-block:: console
 
- $ itauscraper --agencia 1234 --conta 12345 --digito 6 --senha SECRET
+ $ itauscraper --extrato --cartao --agencia 1234 --conta 12345 --digito 6 --senha SECRET
 
- Dia                  Descrição            R$
- -------------------  -----------  ----------
- 2017-01-01 00:00:00  RSHOP-LOJA1       -1.99
- 2017-01-02 00:00:00  RSHOP-LOJA2       -5.00
- 2017-01-03 00:00:00  TBI 1234567       10.00
 
 Ou importe direto no seu código:
 
@@ -121,9 +148,10 @@ Ou importe direto no seu código:
  from itauscraper import ItauScraper
 
  itau = ItauScraper(agencia='1234', conta='12345', digito='6', senha='SECRET')
- if itau.login():
-     dados = itau.extrato()
-     # TODO: Divirta-se!
+ itau.login():
+ print(itau.extrato())
+ print(itau.cartao())
+ # TODO: Divirta-se!
 
 Development
 -----------

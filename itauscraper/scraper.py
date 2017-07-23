@@ -1,9 +1,7 @@
 """Lógica do navegação no site do Itaú."""
-from lxml import html
 import requests
 
-from itauscraper.converter import statements
-from itauscraper.itertools import grouper
+from itauscraper.pages import CardMenuPage, StatementPage, MenuPage, LoginPage, FirstPage, CardStatement
 
 
 class MobileSession(requests.Session):
@@ -35,69 +33,54 @@ class ItauScraper:
         url = 'https://ww70.itau.com.br/M/LoginPF.aspx'
 
         # Faz um GET na url inválida de login para descobrir o parâmetro de sessão.
-        page = self.session.get(url)
-        tree = html.fromstring(page.content)
+        response = self.session.get(url)
+        page = FirstPage(response)
 
-        # Extrai do html o parâmetro de sessão e anexa à url de login.
-        nl = tree.xpath("//a[starts-with(@href, '../Login')]/@href")
-        href = nl[-1]
-        param = href.split('?')[-1]
-        url = ''.join((url, '?', param))
+        url = page.valid_login_url()
 
         # Faz um GET na url válida de login para exibir o formulário com campos do ASP.NET.
-        page = self.session.get(url)
-        tree = html.fromstring(page.content)
-
-        # Extrai os nomes e valores dos campos do ASP.NET montando um dicionário.
-        xpath = "//input[starts-with(@name, '__') and @value]/@*[name()='name' or name()='value']"
-        viewstate = dict(grouper(tree.xpath(xpath)))
-
-        # Prepara o dicionário com dados do post combinado os dados do ASP.NET e os dados da conta.
-        data = {}
-        data.update(viewstate)
-        data.update({
-            'ctl00$ContentPlaceHolder1$txtAgenciaT': self.agencia,
-            'ctl00$ContentPlaceHolder1$txtContaT': self.conta,
-            'ctl00$ContentPlaceHolder1$txtDACT': self.digito,
-            'ctl00$ContentPlaceHolder1$txtPassT': self.senha,
-            'ctl00$ContentPlaceHolder1$btnLogInT.x': '12',
-            'ctl00$ContentPlaceHolder1$btnLogInT.y': '14',
-            'ctl00$hddAppTokenApp': '',
-            'ctl00$hddExisteApp': '',
-        })
+        response = self.session.get(url)
+        page = LoginPage(response)
 
         # Faz o POST realizando o login.
-        page = self.session.post(url, data=data)
+        data = page.formdata(self.agencia, self.conta, self.digito, self.senha)
+        response = self.session.post(url, data=data)
+        page = MenuPage(response)
 
-        # Verifica se o login foi bem sucedido checando uma dica no javascript gerado pela página.
-        authenticaded = b"autenticado = 'S'" in page.content
-
-        # Retorna True ou False de acordo com o resultado do login.
-        return authenticaded
+        return page
 
     def extrato(self):
         url = 'https://ww70.itau.com.br/M/SaldoExtratoLancamentos.aspx'
 
         # Assumindo que estamos logados, faz um GET na url que lista os lançamentos.
         # Por padrão serão mostrados lançamentos realizados nos últimos 3 dias.
-        page = self.session.get(url)
-        tree = html.fromstring(page.content)
+        response = self.session.get(url)
+        page = StatementPage(response)
 
-        # Extrai do html o parâmetro da url para a listagem dos últimos 90 dias e anexa à url do extrato.
-        nl = tree.xpath("//a[starts-with(@href, 'Saldo')]/@href")
-        href = nl[-1]
-        param = href.split('?')[-1]
-        url = ''.join((url, '?', param))
+        url = page.url_max_period()
 
         # Faz um GET para listar os lançamentos dos últimos 90 dias, que é o maior período possível.
-        page = self.session.get(url)
-        tree = html.fromstring(page.content)
+        response = self.session.get(url)
+        page = StatementPage(response)
 
-        # Extrai do html os lançamentos e transforma em
-        xpath = "//fieldset[@id='ctl00_ContentPlaceHolder1_FieldExtratoTouch']//td[string-length(text())>1]/text()"
-        nl = tree.xpath(xpath)
-        data = tuple(grouper(nl, size=3))  # Reconstroi a tabela de 3 em 3.
-        rows = data[1:]                    # Ignora o cabeçalho da tabela.
-        stmts = tuple(statements(rows))    # Converte textos para tipos Python
+        stmts = page.statements()
 
         return stmts
+
+    def cartao(self):
+        url = 'https://ww70.itau.com.br/M/FaturaCartaoCreditoQT.aspx'
+
+        # Assumindo que estamos logados, faz um GET na url que lista o menu do cartão.
+        response = self.session.get(url)
+        page = CardMenuPage(response)
+
+        # Faz um GET para listar os lançåmentos atuais do cartão.
+        url = page.url_menu_current()
+        response = self.session.get(url)
+        page = CardStatement(response)
+
+        summary = page.summary()
+        stmts = page.statements()
+
+        return summary, stmts
+

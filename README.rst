@@ -127,6 +127,17 @@ No final, temos um *dicionário* com o sumário da fatura e uma *tupla de tuplas
 
 .. code-block:: python
 
+    # sumário
+    {'Total dos lançamentos anteriores': Decimal('4.99'),
+     'Créditos e pgtos': Decimal('4.99'),
+     'Total nacional': Decimal('1.99'),
+     'Total internacional': Decimal('0.00'),
+     'Dólar em 06/07/2017': Decimal('9.99'),
+     'Total dos lançamentos atuais': Decimal('1.99'),
+     'Pagamento mínimo': Decimal('0.25'),
+     }
+
+    # lançamentos
     ((datetime.datetime(2017, 1, 1, 0, 0), 'RSHOP-LOJA1', Decimal('-1.99')),
      (datetime.datetime(2017, 1, 2, 0, 0), 'RSHOP-LOJA2', Decimal('-5.00')),
      (datetime.datetime(2017, 1, 3, 0, 0), 'TBI 1234567', Decimal('10.00')))

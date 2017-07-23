@@ -119,7 +119,7 @@ Com o extrato do cartão:
 
 1. Extraímos a informação do html;
 2. Reconstruímos o resumo como um *dicionário*.
-2. Reconstruímos a tabela com as colunas: data, descrição e valor;
+3. Reconstruímos a tabela com as colunas: data, descrição e valor;
 4. Convertemos cada *data* para o tipo ``datetime.date``;
 5. Convertemos cada *valor* para o tipo ``Decimal``;
 

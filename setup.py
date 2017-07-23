@@ -10,7 +10,7 @@ REQUIREMENTS = os.path.join(os.path.dirname(__file__), 'requirements.txt')
 if __name__ == "__main__":
     setup(name='itauscraper',
           description='Scraper para baixar seus extratos do Itaú com um comando.',
-          version='0.2',
+          version='0.3',
           long_description=open(README).read(),
           author="Henrique Bastos", author_email="henrique@bastos.net",
           license="GNU GPLv3",

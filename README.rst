@@ -95,9 +95,9 @@ No final, temos uma *tupla de tuplas* na forma:
 
 .. code-block:: python
 
-    ((datetime.datetime(2017, 1, 1, 0, 0), 'RSHOP-LOJA1', Decimal('-1.99')),
-     (datetime.datetime(2017, 1, 2, 0, 0), 'RSHOP-LOJA2', Decimal('-5.00')),
-     (datetime.datetime(2017, 1, 3, 0, 0), 'TBI 1234567', Decimal('10.00')))
+    ((datetime.date(2017, 1, 1), 'RSHOP-LOJA1', Decimal('-1.99')),
+     (datetime.date(2017, 1, 2), 'RSHOP-LOJA2', Decimal('-5.00')),
+     (datetime.date(2017, 1, 3), 'TBI 1234567', Decimal('10.00')))
 
 O cartão
 ~~~~~~~~
@@ -137,9 +137,9 @@ No final, temos um *dicionário* com o sumário da fatura e uma *tupla de tuplas
      'Pagamento mínimo': Decimal('0.25')}
 
     # lançamentos
-    ((datetime.datetime(2017, 1, 1, 0, 0), 'RSHOP-LOJA1', Decimal('-1.99')),
-     (datetime.datetime(2017, 1, 2, 0, 0), 'RSHOP-LOJA2', Decimal('-5.00')),
-     (datetime.datetime(2017, 1, 3, 0, 0), 'TBI 1234567', Decimal('10.00')))
+    ((datetime.date(2017, 1, 1), 'RSHOP-LOJA1', Decimal('-1.99')),
+     (datetime.date(2017, 1, 2), 'RSHOP-LOJA2', Decimal('-5.00')),
+     (datetime.date(2017, 1, 3), 'TBI 1234567', Decimal('10.00')))
 
 Como usar
 ---------

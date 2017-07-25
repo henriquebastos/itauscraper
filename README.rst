@@ -163,6 +163,13 @@ Ou importe direto no seu código:
  print(itau.cartao())
  # TODO: Divirta-se!
 
+Para conhecer todas as opções execute:
+
+.. code-block:: console
+
+ $ itauscraper -h
+
+
 Development
 -----------
 

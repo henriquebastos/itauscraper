@@ -180,4 +180,4 @@ Licença
 
 Copyright (C) 2017 Henrique Bastos.
 
-Este código é distribuído nos termos da "GNU GPLv3". Veja o arquivo LICENSE para detalhes.
+Este código é distribuído nos termos da "GNU LGPLv3". Veja o arquivo LICENSE para detalhes.

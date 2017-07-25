@@ -6,6 +6,15 @@ from tabulate import tabulate
 from itauscraper.scraper import ItauScraper
 
 
+def csv(data):
+    lines = (','.join((str(col) for col in row)) for row in data)
+    return '\n'.join(lines)
+
+
+def table(data):
+    return tabulate(data, floatfmt='.2f')
+
+
 def main():
     parser = argparse.ArgumentParser(prog='itau',
                                      description='Scraper para baixar seus extratos do Itaú com um comando.')
@@ -16,11 +25,15 @@ def main():
     parser.add_argument('--conta', '-c', help='Conta sem dígito na forma 00000', required=True)
     parser.add_argument('--digito', '-d', help='Dígito da conta na forma 0', required=True)
     parser.add_argument('--senha', '-s', help='Senha eletrônica da conta no Itaú.', required=True)
+    parser.add_argument('--csv', help='Imprime os dados em CSV.', dest='output',
+                        action='store_const', const=csv, default=table)
 
     args = parser.parse_args()
 
     if not (args.extrato or args.cartao):
         parser.exit(0, "Indique a operação: --extrato e/ou --cartao\n")
+
+    output = args.output  # csv or table (default)
 
     itau = ItauScraper(args.agencia, args.conta, args.digito, args.senha)
 
@@ -28,9 +41,12 @@ def main():
 
     if args.extrato:
         data = itau.extrato()
-        print(tabulate(data, headers=('Dia', 'Descrição', 'R$'), floatfmt='.2f'))
+        print()
+        print(output(data))
 
     if args.cartao:
         summary, data = itau.cartao()
-        print(tabulate(summary.items(), floatfmt='.2f'))
-        print(tabulate(data, headers=('Dia', 'Descrição', 'Valor'), floatfmt='.2f'))
+        print()
+        print(output(summary.items()))
+        print()
+        print(output(data))

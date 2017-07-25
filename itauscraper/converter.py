@@ -15,6 +15,8 @@ def date(s):
     if dt.month > datetime.date.today().month:
         dt += relativedelta(years=-1)
 
+    dt = dt.date()
+
     return dt
 
 

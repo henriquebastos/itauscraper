@@ -1,6 +1,7 @@
 """Command line interface."""
 import argparse
 
+from getpass import getpass
 from tabulate import tabulate
 
 from itauscraper.scraper import ItauScraper
@@ -24,7 +25,7 @@ def main():
     parser.add_argument('--agencia', '-a', help='Agência na forma 0000', required=True)
     parser.add_argument('--conta', '-c', help='Conta sem dígito na forma 00000', required=True)
     parser.add_argument('--digito', '-d', help='Dígito da conta na forma 0', required=True)
-    parser.add_argument('--senha', '-s', help='Senha eletrônica da conta no Itaú.', required=True)
+    parser.add_argument('--senha', '-s', help='Senha eletrônica da conta no Itaú.')
     parser.add_argument('--csv', help='Imprime os dados em CSV.', dest='output',
                         action='store_const', const=csv, default=table)
 
@@ -34,8 +35,9 @@ def main():
         parser.exit(0, "Indique a operação: --extrato e/ou --cartao\n")
 
     output = args.output  # csv or table (default)
+    senha = args.senha or getpass("Digite sua senha do Internet Banking: ")
 
-    itau = ItauScraper(args.agencia, args.conta, args.digito, args.senha)
+    itau = ItauScraper(args.agencia, args.conta, args.digito, senha)
 
     assert itau.login()
 

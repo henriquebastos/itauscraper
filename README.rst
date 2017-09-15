@@ -148,6 +148,14 @@ Use pela linha de comando:
 
 .. code-block:: console
 
+ $ itauscraper --extrato --cartao --agencia 1234 --conta 12345 --digito 6
+ Digite sua senha do Internet Banking: 
+
+
+Ou:
+
+.. code-block:: console
+
  $ itauscraper --extrato --cartao --agencia 1234 --conta 12345 --digito 6 --senha SECRET
 
 

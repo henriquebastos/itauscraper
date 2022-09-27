@@ -38,10 +38,7 @@ class LoginPage(Page):
         xpath = "//input[starts-with(@name, '__') and @value]/@*[name()='name' or name()='value']"
         viewstate = dict(grouper(self.tree.xpath(xpath)))
 
-        # Prepara o dicionário com dados do post combinado os dados do ASP.NET e os dados da conta.
-        data = {}
-        data.update(viewstate)
-        data.update({
+        return viewstate | {
             'ctl00$ContentPlaceHolder1$txtAgenciaT': agencia,
             'ctl00$ContentPlaceHolder1$txtContaT': conta,
             'ctl00$ContentPlaceHolder1$txtDACT': digito,
@@ -50,9 +47,7 @@ class LoginPage(Page):
             'ctl00$ContentPlaceHolder1$btnLogInT.y': '14',
             'ctl00$hddAppTokenApp': '',
             'ctl00$hddExisteApp': '',
-        })
-
-        return data
+        }
 
 
 class MenuPage(Page):
@@ -61,8 +56,7 @@ class MenuPage(Page):
     def url_cartao(self):
         # Extrai do html a url das faturas do cartão.
         nl = self.tree.xpath("//span[.='CartÃµes']/ancestor::div[1]/a/@href")
-        url = nl[-1]
-        return url
+        return nl[-1]
 
 
 class StatementPage(Page):
@@ -81,19 +75,20 @@ class StatementPage(Page):
         nl = self.tree.xpath(xpath)
         data = tuple(grouper(nl, size=3))  # Reconstroi a tabela de 3 em 3.
         rows = data[1:]  # Ignora o cabeçalho da tabela.
-        stmts = tuple(statements(rows))  # Converte textos para tipos Python
-        return stmts
+        return tuple(statements(rows))
 
 
 class CardMenuPage(Page):
     BASE_URL = 'https://ww70.itau.com.br/M/FaturaCartaoCreditoQT.aspx'
 
     def _url_menu(self, text):
-        nl = self.tree.xpath("//div[.='LanÃ§amentos {}']/ancestor::div[1]/a/@href".format(text))
+        nl = self.tree.xpath(
+            f"//div[.='LanÃ§amentos {text}']/ancestor::div[1]/a/@href"
+        )
+
         href = nl[-1]
         param = href.split('?')[-1]
-        url = ''.join((self.BASE_URL, '?', param))
-        return url
+        return ''.join((self.BASE_URL, '?', param))
 
     def url_menu_current(self):
         return self._url_menu('atuais')
@@ -118,5 +113,4 @@ class CardStatement(Page):
         nl = self.tree.xpath(xpath)
         data = tuple(grouper(nl, size=3))  # Reconstroi a tabela de 3 em 3.
         rows = data[1:]  # Ignora o lançamento de pagamento anterior.
-        stmts = tuple(card_statements(rows))  # Converte textos para tipos Python
-        return stmts
+        return tuple(card_statements(rows))

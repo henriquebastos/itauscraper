@@ -37,7 +37,7 @@ def decimal(s):
     if s.endswith('-'):
         s = s[-1] + s[:-1]
     elif s.endswith(' D'):
-        s = '-' + s[:-2]
+        s = f'-{s[:-2]}'
     elif s.endswith(' C'):
         s = s[:-2]
 

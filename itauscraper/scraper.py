@@ -63,9 +63,7 @@ class ItauScraper:
         response = self.session.get(url)
         page = StatementPage(response)
 
-        stmts = page.statements()
-
-        return stmts
+        return page.statements()
 
     def cartao(self):
         url = 'https://ww70.itau.com.br/M/FaturaCartaoCreditoQT.aspx'
